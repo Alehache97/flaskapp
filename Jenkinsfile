@@ -15,7 +15,7 @@ pipeline {
             stages {
                 stage('Clone') {
                     steps {
-                        git branch:'main',url:'https://github.com/Alehache97/'
+                        git branch:'main',url:'https://github.com/Alehache97/flaskapp.git'
                     }
                 }
                 stage('Install') {
@@ -26,7 +26,7 @@ pipeline {
                 stage('Test')
                 {
                     steps {
-                        sh 'python3 manage.py test --settings=django_tutorial.settings_desarrollo'
+                        sh 'cd app && pytest test_app.py'
                     }
                 }
             }
@@ -61,10 +61,10 @@ pipeline {
         stage ('Despliegue') {
             agent any
             stages {
-                stage ('Despliegue django_tutorial'){
+                stage ('Despliegue flaskapp'){
                     steps{
                         sshagent(credentials : ['SSH_KEY']) {
-                        sh 'ssh -o StrictHostKeyChecking=no debian@pibetis.macale.es "cd django_tutorial_jenkins && git pull && docker-compose down && docker pull alehache/djangotutorial:latest && docker-compose up -d"'
+                        sh 'ssh -o StrictHostKeyChecking=no debian@pibetis.macale.es "cd flaskapp && git pull && docker-compose down && docker pull alehache/flaskapp:latest && docker-compose up -d"'
                         }
                     }
                 }
