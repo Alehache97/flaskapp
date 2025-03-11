@@ -64,7 +64,7 @@ pipeline {
                 stage ('Despliegue flaskapp'){
                     steps{
                         sshagent(credentials : ['SSH_KEY']) {
-                        sh 'ssh -o StrictHostKeyChecking=no debian@pibetis.macale.es "cd flaskapp && git pull && docker-compose down && docker pull alehache/flaskapp:latest && docker-compose up -d"'
+                        sh 'ssh -o StrictHostKeyChecking=no debian@pibetis.macale.es "cd flaskapp && git pull && docker-compose down -v && docker pull alehache/flaskapp:latest && docker-compose up -d"'
                         }
                     }
                 }
